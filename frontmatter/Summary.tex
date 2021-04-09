@@ -1,0 +1,17 @@
+%!TEX root = ../Thesis.tex
+\chapter{Summary}
+\begin{flushleft}
+Copenhagen Suborbitals changes the type of thrust vector control for the upcoming rocket Spica, from the previous jet vanes solution, to gimballing the engine.
+While this is a common solution for spacecraft, it is the first time this system will be used by the organisation and it requires understanding of what the change involves.
+The goal of this project is to study the overall principles of this new type of thrust vector control, then create a system consisting of control and navigation elements, taking into consideration flight elements, for the duration of the powered flight. 
+
+The navigation tests carried on a robotic platform show that the best results, in terms of minimal offset, noise and drift over time, were given by the Mahony filter, seconded by Madgwick filter (provided steady calibrated measurements).
+The approach chosen for the project is Newton-Euler dynamics modelling in order to ensure reliable mechatronic design, as well as model-based control due to scalability and reliability, followed by simulation, experimental validation and analysis. The controller was chosen to be a Proportional Integral Derivative controller, tuned model-based, in order to critically dampen the system. 
+
+Since the Spica rocket is in its initial production phases, the control system developed in this project will be tested on a simplified hardware prototype, simulating the rocket. The reason for this was to insure a testing platform of the model-based approach and assess its performance. 
+This prototype (drone) consists of two contra rotating coaxial propellers representing the thrust and a rudder which simulates the angle deflection produced by a gimbal thrust system. 
+The systems created in this project consist of the navigation system based on an IMU with 9 DoF with sensor fusion and a control system based on the kinematics and dynamics (Newton-Euler) of the drone prototype. 
+
+In conclusion, quaternions based navigation filters provide reliable IMU measurements fit for lower processing micro-controllers and model-based tuning of controller allows for a more complete understanding of the system and its limitations, as well as better tuned algorithms for the system. 
+
+\end{flushleft}

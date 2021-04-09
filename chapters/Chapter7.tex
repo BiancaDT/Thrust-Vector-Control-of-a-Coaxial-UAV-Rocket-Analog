@@ -1,0 +1,71 @@
+%!TEX root = ../Thesis.tex
+\chapter{Discussion and Future Work}
+
+This chapter further discusses the results from the testing phase, along with plans for future work
+
+\section{Discussion}
+
+The goal of having the thrust vector control restricted to one axis was to allow for the clear understanding of the working principles and process workflow of designing and controlling a rigid body. 
+From this understanding, the same principles can be used further, by just extending the rudder to a two-axis control platform instead and adding a decoupled control for the additional axis (yaw). 
+
+The multitude of IMUs tried and tested helped understand the process from the ground up of navigation. From converting the voltage readings into the respective units of each device, to reading and aligning reference frames, to experiencing the limitations of each and relative to each other, such as the errors found in the cheaper versions (crosstalk) were significantly reduced in the higher end ones (BNO055). It was not the initial plan to test multiple IMUs, however as more sensors became available, it warranted comparison for finding the better fit for the project. 
+The initial recommendation from the organisation was to limit the scope of this project by simulating a perfect IMU sensor.
+This was to avoid dealing with the significant challenges of real-world hardware. However, the navigation has proven to be a highly rewarding phase in terms of understanding the process, real life challenges in inertial sensors and the interaction with hardware.  
+ 
+Before finding the Mahony/Madgwick filters, there were other filters tried, which were finally deemed unnecessary after these filters, as they handle vibration. 
+Methods for removing noise were tried, such as Moving average with different weight for older versus newer data, Weighted average, Median filter, Savitzky-Golay Filter, out of which moving/weighted average showed the most promising results, as they have an effect of smoothing the errors, whereas Savitzky-Golay proved to follow outliers more closely as opposed to removing them. 
+ Moving average is a Finite Impulse Response (FIR) filter, taking N data samples and averaging them over a given window of time. 
+Exponential moving average filter is an Infinite Impulse Response (IIR) filter. It has a parameter (weight) ranging from 0 to 1, a higher value giving more weight to older data. In figure  \ref{movingaverage}, this parameter was set to 0.9. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.7]{graphics/accZ.png}
+  \caption{Comparison of moving average filters}
+  \label{movingaverage}
+\end{figure}
+
+Figure \ref{movingaverage} shows the noise of an accelerometer in one axis (z), measured in units of g (9.8 m/$s^2$). This graph plots the acceleration (y axis) measured while the sensor is maintained static, over a subset of samples taken (x axis).
+The red line ("Actual"), represents the true value of the gravitational acceleration, 1 g, used as reference. The blue "IMU" signal represents the noisy IMU measurement of the gravitational acceleration. The signals plotted in red and black show the two types of moving average filters, sliding window and exponential weighting.
+
+While the exponential method follows the changes in signal more precisely, sliding window moving mean provides a smoother signal, that is more suitable for passing the data to a controller, as is the case in this project. Therefore, the sliding window method would be preferred. 
+It can be noticed that the moving average introduces a delay, significant compared to the exponential moving average. The moving mean filter of length N has a sample delay of:
+
+\begin{equation}\label{delay}
+	(N-1)/2
+\end{equation}
+
+An attempt was made to compare simple moving average and exponential weighted moving average filters from figure \ref{movingaverage} between themselves, with delay removed from the simple moving average. In that effect, it can be seen in figure \ref{movingaveragenodelay} that the smoothing effect is slightly improved over the exponential moving filter, achieving lower peaks and more cohesive data. The moving average filter can be a useful alternative to the complementary filter-based solutions presented in the fusion chapter, if the delay is taken into consideration. Measurement data was found to be normally distributed, therefore the IMU could also benefit from a probabilistic filter such as Kalman filter. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.9]{graphics/accznodelay.png}
+  \caption{Comparison of moving average filters with removed delay}
+  \label{movingaveragenodelay}
+\end{figure}
+
+\textbf{Navigation}
+
+Complementary isn't suitable for singularities because of way it uses Euler angles. On top of it Mahony performing best anyway. 
+
+
+
+
+
+
+\textbf{Control considerents: robustness}
+
+Calibration of the errors was important because the derivative component of the PID amplifies high-frequency signals (noise) in the sensor measurements.
+
+In case of using the Integral part of PID, anti-windup measures are also necessary. 
+
+
+\section{Future work}
+
+This chapter rounded up the remaining discussion of the project.
+Subsequent iterations of the hardware prototype would expand its capabilities to two axis control surface, which would require designing and building another deflection mechanism.
+
+The navigation will be tested on a small scale rocket built by former DanSTAR students of DTU, in collaboration with Copenhagen Suborbitals, planned to be launched in Portugal in the fall of 2021. Prior to this, there will be conducted additional vibration tests of the filters, along with performance under acceleration, jerky movements and heavy vibration. 
+
+The controller will have added features with focus on robustness and adding variable mass and moment of inertia as opposed to the fixed bodies moment of inertia in the current iteration. Tests should be done on variable mass drone to closer simulate the rocket. 
+
+Another possibility for control architecture is gain scheduling or cascaded control. 
+

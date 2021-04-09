@@ -1,0 +1,21 @@
+%!TEX root = ../Thesis.tex
+\chapter{Conclusion}
+
+The main objective of this project was to design, implement and test a control system and navigation approach. The main tasks were:
+a) understanding what is involved in rocket stability in flight and gimbaled engine TVC
+b) building a technology demonstrator prototype simulating the rocket to test the control systems on
+c) developing a inertial state estimation system based on an inertial measurement unit
+d) designing a controller that will use the inertial sensor data to control a system suitable for a gimbaled engine
+e) testing controller on a technology demonstrator prototype as a substitute for the rocket.
+The requirements were: a) investigating sources of errors in the inertial sensor, particularly the gyro drift in flight; b)deciding on an absolute heading (yaw) sensor to correct the gyro orientation; c) navigational attitude representation through a method avoiding singularities; d) investigating navigation filters fit for lower processing power, Arduino class micro-controllers; e) navigation filters with a average deviation of maximum 1.5 degrees from the true value, for each axis; f) 1 axis control that can be extended to 2 or 3 axes, g) controller with max 30 percent overshoot and 1.5 sec settling time.
+
+
+The first task was fulfilled in chapter 2, 
+Second task in chapter 3, 
+third task in chapter 4 
+and last task in chapter 6. 
+Requirement 1 to 4 were discussed in chapter 4, discussing the various types of errors specific to each device, choosing magnetometer as absolute heading measurement, filters based on quaternions which avoids singularities and fit for lower processing power microcontrollers. 
+Requirement 5 was validated in chapter 6, during testing, where Mahony filter emerged as the better performing filter, with Madgwick a close second, given steady calibrated data. 
+The control requirements were fulfilled by using a PID controller, which can be extended for all axes and having found sets of gains which stabilize the system with no overshoot and returning it to equilibrium in the least possible time. 
+Therefore, all tasks and all requirements were met in full.The objective of understanding and developing a workflow necessary for the concept of an inertial navigation based thrust vector control was achieved.
+Due to the meeting of the agreed objectives, the project was successful. 

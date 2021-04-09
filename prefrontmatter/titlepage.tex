@@ -1,0 +1,68 @@
+\calccentering{\unitlength}
+\begin{titlingpage}
+\thispagestyle{empty}
+\sffamily
+\vspace*{-2.8cm}
+\hfill\includegraphics[scale=0.7]{DTU-logo-CMYK}
+\begin{adjustwidth*}{\unitlength}{-\unitlength}
+    \begin{adjustwidth}{-0.5cm}{-0.5cm}
+		\noindent
+		
+		
+		\vspace{\stretch{1}}
+		\noindent\textbf{\Huge\ThTitle} \\*[0.2cm]
+		\textcolor{dtured}{\rule{\textwidth + 1.5cm}{4pt}}
+		\vspace{\stretch{2}} 
+		\begin{flushleft}
+		\Large
+            \ThAuthors\\
+            \thesistype{}\\
+            \ThYear
+        \end{flushleft}
+		\vspace{\stretch{3}}
+		\noindent
+		\vspace{-1.8cm}
+		\includegraphics[]{tex_dtu_elektro_a_uk}
+	\end{adjustwidth}
+\end{adjustwidth*}
+	\cleartoevenpage
+		\thispagestyle{empty}
+		\ifnum\pdfstrcmp{\ThSubtitle}{}=0 %Check if there is a subtitle
+		\noindent\textbf{\ThTitle}
+		\else
+		\noindent\textbf{\ThTitle, \ThSubtitle}
+		\fi
+		\vspace{\stretch{1}}
+
+		\noindent\textbf{Report written by:}\\
+		\ThAuthors
+
+		\vspace{\stretch{2}}
+
+		\noindent\textbf{Advisor(s):}\\
+		\ThSupervisors
+
+		\vspace{\stretch{3}}
+
+		\noindent\ThDepartment
+
+		\vspace{\stretch{4}}
+
+		\noindent\ThElektroEmail
+
+		\vspace{\stretch{5}}
+		\frieze
+		\noindent{\renewcommand{\arraystretch}{2}\begin{tabular}{@{}lp{0.75\textwidth}}
+			Project period:&	\ThProjectPeriod\\
+			ECTS:&		\ThECTS\\
+			Education:&	\thesistypeabbr\\
+			Field:&		\ThField\\
+			Class:&		\ThClass\\
+			Edition:&	\ThEdition\\
+			Remarks:&	\ThRemarks\\
+			Copyrights:&\ThCopyrights
+		\end{tabular}}
+		
+\end{titlingpage}
+\normalfont
+\normalsize
