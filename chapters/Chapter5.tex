@@ -272,13 +272,21 @@ Differentiating the constraint equation (\ref{constraint}) twice, results the an
 
 \subsection{Absolute linear acceleration}
 
-
 The next step is calculating the absolute linear acceleration vectors of the center of mass of the moving bodies. The absolute linear acceleration at the center of mass of each body is composed of normal and tangential acceleration. 
 
 The absolute velocity vector is defined as the derivative in time of the position vector and the absolute acceleration vector is the derivative in time of the position vector.
 
 The calculations are done in inertial frame, in order to obtain the absolute position vectors and their absolute  derivatives, without losing information. \cite{santos2001dinamica}.
 
+\textbf{Body 0 - UAV frame}
+
+\begin{equation}\label{aabody0}
+{_B}_{0}\vec{a}_{01} = {_B}_{0}\vec{\omega}_{0}\times \,({_B}_{0}\vec{\omega}_{0}\times \,{_B}_{0}\vec{r}_{CM-01}) + {_B}_{0}\dot{\vec{\omega}}_{0}\times \,{_B}_{0}\vec{r}_{CM-01}
+\end{equation}
+
+\begin{equation}\label{aabody01}
+{_B}_{0}\vec{a}_{1}^* = {_B}_{0}\vec{a}_{01}+ {_B}_{0}\vec{\omega}_{1}\times \,({_B}_{0}\vec{\omega}_{1}\times \,{_B}_{0}\vec{r}_{O1-CM}) + {_B}_{0}\dot{\vec{\omega}}_{1}\times \,{_B}_{0}\vec{r}_{O-CM}
+\end{equation}
 
 \textbf{Body 1 - Servo}
 
@@ -291,12 +299,15 @@ _I\vec{a}_{1}^* = {_I}\vec{a}_{0}+ {_I}\vec{\omega}_{1}\times \,({_I}\vec{\omega
  \begin{align*}
 _B{_1}{r}_{O-CM} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}0
 \end {array} \right] &
-{_I}\vec{\omega}_{1} =&  \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {\rm d}{{\rm d}t}}\theta_{{1}} \left( t \right) \end {array}
- \right]&
-{_I}\dot{\vec{\omega}}_{1} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{1}} \left( t \right) 
-\end {array} \right] &
+{_B}\vec{\omega}_{1} =&   \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}
+{{\rm d}t}}\theta_{{1}} \left( t \right) \end {array} \right] 
+&
+{_B}\dot{\vec{\omega}}_{1} &=  \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) +{
+\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{1}} \left( t \right) 
+\end {array} \right] 
+ &
 \end{align*}
  
  Resulting in 0 absolute acceleration of the body 1 due to point O coinciding with the center of mass of body 1 (servo) and no translational motion in body 1.  \textbf{This is valid in the4 case of static drone, however it would change with the addition of the 3 DoF of the drone body. }
@@ -314,6 +325,16 @@ _B{_1}{r}_{O-CM} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{
 	 {_I}\vec{a}_{A} = {_I}\vec{\omega}_{1}\times \,({_I}\vec{\omega}_{1}\times \,{_I}\vec{r}_{OA}) + {_I}\dot{\vec{\omega}}_{1}\times \,{_I}\vec{r}_{OA}
 \end{equation}
 
+*New eqs
+
+\begin{equation}\label{aabody2a}
+{_B}_{0}\vec{a}_{2}^* = {_B}_{0}\vec{a}_{A}+ T_{\theta _2}^T({_B}_{2}\vec{\omega}_{2}\times \,({_B}_{2}\vec{\omega}_{2}\times \,{_B}_{2}\vec{r}_{A-O2}) + {_B}_{2}\dot{\vec{\omega}}_{2}\times \,{_B}_{2}\vec{r}_{A-O2})
+\end{equation}
+
+\begin{equation}\label{aabody2b}
+{_B}_{0}\vec{a}_{A} = {_B}_{0}\vec{a}_{01}+{_B}_{0}\vec{\omega}_{1}\times \,({_B}_{0}\vec{\omega}_{1}\times \,{_B}_{0}\vec{r}_{01-A}) + {_B}_{0}\dot{\vec{\omega}}_{1}\times \,{_B}_{0}\vec{r}_{01-A}
+\end{equation}
+
 
 where:
 
@@ -324,12 +345,15 @@ _B{_1}{r}_{OA} &=  \left[ \begin {array}{c} - 0.02\,\sin\,\theta_{1}
 & {_B}{_2}{r}_{A-CM} &=  \left[ \begin {array}{c} - 0.04\,\cos\,\theta_{2}
 \\ \noalign{\medskip}- 0.04\,\sin\,\theta_{2}\\ \noalign{\medskip}
  0.0\end {array} \right]&
-{_I}\vec{\omega}_{2} =&   \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {\rm d}{{\rm d}t}}\theta_{{2}} \left( t \right) \end {array}
- \right]&
-{_I}\dot{\vec{\omega}}_{2} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2}} \left( t \right) 
-\end {array} \right]&}
+{_B}\vec{\omega}_{2} =&   \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}
+{{\rm d}t}}\theta_{{2}} \left( t \right) \end {array} \right]
+&
+{_B}\dot{\vec{\omega}}_{2} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) +{
+\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2}} \left( t \right) 
+\end {array} \right] 
+&}
 \end{align*}
 
 Results the following:
@@ -366,15 +390,103 @@ where
 \begin{align*}
 _B{_3}{r}_{C-CM} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}0
 \end {array} \right]&
-{_I}\vec{\omega}_{3} =&   \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {\rm d}{{\rm d}t}}\theta_{{3}} \left( t \right) \end {array}
- \right]&
-{_I}\dot{\vec{\omega}}_{3} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
-{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{3}} \left( t \right) 
-\end {array} \right]&
+{_B}\vec{\omega}_{3} =& \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}
+{{\rm d}t}}\theta_{{3}} \left( t \right) \end {array} \right] 
+&
+{_B}\dot{\vec{\omega}}_{3} &=  \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}
+{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) +{
+\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{3}} \left( t \right) 
+\end {array} \right] 
+&
 \end{align*}
 
 Which results in 0 linear acceleration for body 3 (rudder) since point C coincides with the center of mass of body 3 and there is no translational movement in body 3. This concludes the kinematics section of the model. The next section models the dynamics of the system. 
+
+***New eqs
+
+\begin{equation}\label{aabody3a}
+{_B}_{0}\vec{a}_{3}^* = {_B}_{0}\vec{a}_{C}+ {_B}_{3}\vec{\omega}_{3}\times \,({_B}_{3}\vec{\omega}_{3}\times \,{_B}_{3}\vec{r}_{C-O3}) + {_B}_{3}\dot{\vec{\omega}}_{3}\times \,{_B}_{3}\vec{r}_{C-O3}
+\end{equation}
+
+\begin{equation}\label{aabody3b}
+{_B}_{0}\vec{a}_{C} = {_B}_{0}\vec{\omega}_{0}\times \,({_B}_{0}\vec{\omega}_{0}\times \,{_B}_{0}\vec{r}_{CM-C}) + {_B}_{0}\dot{\vec{\omega}}_{0}\times \,{_B}_{0}\vec{r}_{CM-C}
+\end{equation}
+
+****New AAs
+
+a0
+\begin{equation}\label{newaabody0}
+\left[ \begin {array}{c} - 0.078\, \left( {\frac {\rm d}{{\rm d}t}}
+\theta_{{0}} \left( t \right)  \right) ^{2}+ 0.195\,{\frac {{\rm d}^{2
+}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) \\ \noalign{\medskip}
+ 0.195\, \left( {\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t
+ \right)  \right) ^{2}+ 0.078\,{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}
+\theta_{{0}} \left( t \right) \\ \noalign{\medskip}0\end {array}
+ \right] 
+\end{equation}
+
+\begin{equation}\label{newaabodyAA1}
+\left[ \begin {array}{c} - 0.078\, \left( {\frac {\rm d}{{\rm d}t}}
+\theta_{{0}} \left( t \right)  \right) ^{2}+ 0.195\,{\frac {{\rm d}^{2
+}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) \\ \noalign{\medskip}
+ 0.195\, \left( {\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t
+ \right)  \right) ^{2}+ 0.078\,{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}
+\theta_{{0}} \left( t \right) \\ \noalign{\medskip}0\end {array}
+ \right] 
+\end{equation}
+
+\begin{equation}\label{newaabodyAA2}
+\left[ \begin {array}{c} - 0.078\, \left( {\frac {\rm d}{{\rm d}t}}
+\theta_{{0}} \left( t \right)  \right) ^{2}+ 0.195\,{\frac {{\rm d}^{2
+}}{{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) + 0.02\, \left( {
+\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{
+{\rm d}t}}\theta_{{1}} \left( t \right)  \right) ^{2}\sin \left( 
+\theta_{1} \right) - 0.02\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}
+}}\theta_{{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}
+\theta_{{1}} \left( t \right)  \right) \cos \left( \theta_{1} \right) 
++\cos \left( \theta_{2} \right)  \left(  0.04\, \left( {\frac {\rm d}{
+{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{{\rm d}t}}
+\theta_{{2}} \left( t \right)  \right) ^{2}\cos \left( \theta_{2}
+ \right) + 0.04\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{
+{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2
+}} \left( t \right)  \right) \sin \left( \theta_{2} \right)  \right) -
+\sin \left( \theta_{2} \right)  \left(  0.04\, \left( {\frac {\rm d}{
+{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{{\rm d}t}}
+\theta_{{2}} \left( t \right)  \right) ^{2}\sin \left( \theta_{2}
+ \right) - 0.04\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{
+{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2
+}} \left( t \right)  \right) \cos \left( \theta_{2} \right)  \right) 
+\\ \noalign{\medskip} 0.195\, \left( {\frac {\rm d}{{\rm d}t}}\theta_{
+{0}} \left( t \right)  \right) ^{2}+ 0.078\,{\frac {{\rm d}^{2}}{
+{\rm d}{t}^{2}}}\theta_{{0}} \left( t \right) - 0.02\, \left( {\frac 
+{\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{
+{\rm d}t}}\theta_{{1}} \left( t \right)  \right) ^{2}\cos \left( 
+\theta_{1} \right) - 0.02\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}
+}}\theta_{{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}
+\theta_{{1}} \left( t \right)  \right) \sin \left( \theta_{1} \right) 
++\sin \left( \theta_{2} \right)  \left(  0.04\, \left( {\frac {\rm d}{
+{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{{\rm d}t}}
+\theta_{{2}} \left( t \right)  \right) ^{2}\cos \left( \theta_{2}
+ \right) + 0.04\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{
+{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2
+}} \left( t \right)  \right) \sin \left( \theta_{2} \right)  \right) +
+\cos \left( \theta_{2} \right)  \left(  0.04\, \left( {\frac {\rm d}{
+{\rm d}t}}\theta_{{0}} \left( t \right) +{\frac {\rm d}{{\rm d}t}}
+\theta_{{2}} \left( t \right)  \right) ^{2}\sin \left( \theta_{2}
+ \right) - 0.04\, \left( {\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{
+{0}} \left( t \right) +{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}}\theta_{{2
+}} \left( t \right)  \right) \cos \left( \theta_{2} \right)  \right) 
+\\ \noalign{\medskip} 0.0\end {array} \right]
+\end{equation}
+
+\begin{equation}\label{newaabodyAA3}
+ \left[ \begin {array}{c}  0.195\,{\frac {{\rm d}^{2}}{{\rm d}{t}^{2}}
+}\theta_{{0}} \left( t \right) \\ \noalign{\medskip} 0.195\, \left( {
+\frac {\rm d}{{\rm d}t}}\theta_{{0}} \left( t \right)  \right) ^{2}
+\\ \noalign{\medskip}0\end {array} \right] 
+\end{equation}
+
 
 \subsection{Dynamic equilibrium (Newton-Euler)}
 
@@ -387,6 +499,28 @@ Deriving the dynamics of the system, summing all forces and moments acting on th
 \end{align*}
 
 Following the Newton-Euler method for achieving dynamical equilibrium between the rigid bodies, with the forces and reaction forces exerted on each body equal to mass times the absolute acceleration at the center of mass described in (\ref{aabody1}), (\ref{aabody2}) and (\ref{aabody3}):   
+
+Newton - Body 0
+
+\begin{equation}\label{ne_b0}
+  \left[ \begin {array}{c} {\it Fcmx}\\ \noalign{\medskip}{\it Fcmy}
+\\ \noalign{\medskip}0\end {array} \right] 
++
+ \left[ \begin {array}{c} {\it -Ox}\\ \noalign{\medskip}{\it -Oy}
+\\ \noalign{\medskip}0\end {array} \right] 
++
+ \left[ \begin {array}{c} {\it -Cx}\\ \noalign{\medskip}{\it -Cy}
+\\ \noalign{\medskip}0\end {array} \right] 
++
+\left[ \begin {array}{c} {\it 0}\\ \noalign{\medskip}{\it -F_{prop}}
+\\ \noalign{\medskip}0\end {array} \right] 
++
+ \left[ \begin {array}{c} 0\\ \noalign{\medskip}-m_{{0}}g
+\\ \noalign{\medskip}0\end {array} \right] 
+ = {m}_{0} _B\vec{a}_{0}^*
+\end{equation}
+
+
 
 Newton - Body 1
 
@@ -439,10 +573,17 @@ Newton - Body 3
 Body 1 (servo) and 2 (link) have only the forces and reaction forces in x and y acting on each of their two respective connection points plus their weight, while body 3 (rudder) has the forces acting from the two propellers. 
 Following, the rotational equations for each body, in the body frame:
 
+Euler - Body 0
+
+ \begin{equation}\label{euler0}
+ -M +{_B}{_0}{r}_{CM-O}\times (-{_B}{O}) + \,_B{_0}{r}_{CM-C} \times (-{_B}{C}) + {_B}{_0}{r}_{CM-Prop}\times (-_B{_0}{F}) = I  \frac{d}{dt}(_B{_0}{{\omega})}
+\end{equation}
+
+
 Euler - Body 1 
 
 \begin{equation}\label{euler1}
-	_B{_1}{r}_{CM-A}\times (T_\theta{_1} \, {_I}{A}) + \,_B{_1}{r}_{CM-O} \times (T_\theta{_1} \, {_I}{O}) + _B{_1}{T} = I  \frac{d}{dt}(_B{_1}{\omega)}
+	_B{_1}{r}_{CM-A}\times (T_\theta{_1} \, {_I}{A}) + \,_B{_1}{r}_{CM-O} \times (T_\theta{_1} \, {_I}{O}) + {M} = I  \frac{d}{dt}(_B{_1}{\omega)}
 \end{equation}
 
 
@@ -453,7 +594,7 @@ _B{_1}{r}_{CM-O} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{
 \end {array} \right] &
 _B{_1}{r}_{CM-A} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0.02\\ \noalign{\medskip}0
 \end {array} \right]&
-_B{_1}{T} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}T
+_B{_1}{M} &= \left[ \begin {array}{c} 0\\ \noalign{\medskip}0\\ \noalign{\medskip}M
 \end {array} \right]&
 \end{align*}
 
