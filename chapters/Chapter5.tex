@@ -147,7 +147,7 @@ _{I}{r} = T_{\theta}^T {_B }{r}
 \end{equation}
 
 
-Writing the displacement vectors for the each of the three bodies of the mechanism in the body frame and the distance from point C to O, closing the constraint equation, in the inertial frame
+Writing the displacement vectors for the each of the three bodies of the mechanism in the body frame and the distance from point C to O, closing the constraint equation, in the inertial frame:
 
 
 \begin{equation} \label{disp_vec1}
@@ -775,7 +775,7 @@ Figure \ref{fig:Model validation of the constraint equation for body 1} shows th
   \label{fig:Model validation of the constraint equation for body 2}
 \end{figure}
 
-Figure \ref{fig:Model validation of the constraint equation for body 2} shows the movement of the link in radians, reaching its limit in one direction and returning to starting position. The movement of the link is indeed very restrained.
+Figure \ref{fig:Model validation of the constraint equation for body 2} shows the movement of the link in radians, reaching its limit in one direction and returning to starting position. The movement of the link is showing evolution over time consistent with its true response. 
 
 \begin{figure}[H]
   \centering
@@ -848,14 +848,10 @@ The role of the controller is to minimize the error. In designing the controller
 In the modelling section chapter, the UAV was modeled using first principles (nonlinear physical laws).
 The system has voltage to servo as input, with drone angular position as output. The thrust force of the propellers is considered part of the model as opposed to an input due to the force being a constant. 
 Therefore, the system is considered a SISO (single input single output), modelled as state space model.
-
-
-\textbf{Linearization }- the model obtained from first principles was highly non-linear.
+The model obtained from first principles was highly non-linear.
 While this non-linearity gives higher precision, it is resource intensive and especially so for Arduino-class micro controllers. 
 Linearization  helps speed up this process and would facilitate control system design. 
-
 This is achieved by the first order partial derivatives of the model at a steady state operating point (Jacobian matrix).
-
 A is the Jacobian of the function evaluated at the steady state (equilibrium position). 
 
 \begin{flalign*}
@@ -885,11 +881,6 @@ The stability is expressed with respect to the system response as a function of 
 In order to determine the stability of the system, its eigenvalues (poles) are analyzed, pictured in (\ref{fig:Pole-Zero Map}), Where the poles of the system are marked with an \textbf{x} and zeros are marked with \textbf{o}. It can be seen in (\ref{fig:Pole-Zero Map}) that the poles of the system have zero real part - indicating that the system is marginally stable. 
 On the imaginary scale, two poles having zero imaginary parts - indicating no oscillations - and two poles placed on the axis, indicating oscillations in the system. Therefore, the purely imaginary eigenvalues describe the system as a marginally stable, undamped oscillator. 
 The two zeroes of the system are placed on the real axis, at +/-0.00808. The zero in the left plane is a good solution for controller design, having stability and no oscillations. 
-
-
-The poles and zeroes are then analyzed in combination with varying gains for the feedback system, in order to determine viable solutions for the controller. The plot (\ref{fig:Root Locus Map}) shows the grid on the left hand side of the real-imaginary plane, for the values where the system is stable. 
-
-\textbf{Controllability matrix} of the state-space LTI system
 
 Controllability is a property of a system of a particular actuator configuration to control all the states of the system; in a similar manner, observability returns the property of the particular sensor configuration to estimate all the states of the system. \cite{preumont2018vibration}
 The system returns full state observability. 
@@ -930,7 +921,8 @@ The control input is the actuator torque.
 
 The controller was initially tested with Proportional gain (kP) only, however, it was oscillating without stabilizing for any input gain. With the addition of the Derivative gain (kD), the system stabilized. The gains were tuned in order to find the set of gains which minimized overshoot, rise time and settling time of the signal. The Integral gain was found not necessary, since the system reaches reference input without any significant steady state error to be corrected for - and the Integral (kI) gain was found to be otherwise detrimental to the performance, introducing overshoot, oscillation and increasing the settling time, as well as the potential of wind-up - and was therefore set to 0. 
 
-In the Simulink model, the initial condition for UAV angular position was set to 0.2 rad, corresponding to a starting inclination that the controller will have to correct for in order to reach angular position of 0 rad. The velocity of the UAV was set to 0.2 rad/s initial condition. With these conditions, the best performing set of gains was found to be kP = -2 and kD = -8.  
+In the Simulink model, the initial condition for UAV angular position was set to 0.2 rad, corresponding to a starting inclination that the controller will have to correct for in order to reach angular position of 0 rad. The velocity of the UAV was set to 0.2 rad/s initial condition. With these conditions, the tuning process (partly referenced in fig. \ref{fig:Controller tuning process: kP=2}, fig. \ref{fig:Controller tuning process: kP=0.5, kD=0.5})
+started with gradual increments of the kP until an increase in overshoot and decrease in settling time has been observed, followed by increase in kD parameter. The best performing set of gains in terms of minimized settling time, overshoot and rise time was found to be kP = -2 and kD = -8.  
 
 \begin{figure}[H]
     \centering
@@ -939,7 +931,7 @@ In the Simulink model, the initial condition for UAV angular position was set to
      \label{fig:Oscilloscope graph of the angular position of UAV and servo angle}
 \end{figure} 
 
-In \ref{fig:Oscilloscope graph of the angular position of UAV and servo angle}, theta0 represents the angular position of the UAV and theta1 represents the servo (actuator) position. With the mentioned gains, the system was found to have no overshoot, no necessary rising time and a settling time of 0.2 seconds. The controller thus sets the system, a harmonic oscillator, into a critically damped oscillator, reaching the equilibrium position of 0 rad quickly with no overshoot or oscillations. With this controller, the system remains critically damped with any initial condition ranging from 0 to +-0.8 radians (45 degrees)
+In fig. \ref{fig:Oscilloscope graph of the angular position of UAV and servo angle}, theta0 represents the angular position of the UAV and theta1 represents the servo (actuator) position. With the mentioned gains, the system was found to have no overshoot, no necessary rising time and a settling time of 0.2 seconds. The controller thus sets the system, a harmonic oscillator, into a critically damped oscillator, reaching the equilibrium position of 0 rad quickly with no overshoot or oscillations. With this controller, the system remains critically damped with any initial condition ranging from 0 to +/-0.8 radians (45 degrees)
 This fulfills the requirements of having under 30 percent overshoot and under 1.5 settling time. 
 
 

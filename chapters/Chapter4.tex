@@ -1,7 +1,7 @@
 %!TEX root = ../Thesis.tex
 \chapter{Inertial Navigation}
 
-This chapter describes inertial navigation, as well as how the  together in sensor fusion provide navigation data. Here is documented the work on calibrating the sensor, types of errors encountered.
+\textit{This chapter describes inertial navigation, as well as how the  together in sensor fusion provide navigation data. Here is documented the work on calibrating the sensor, types of errors encountered.}
 
 \section{Investigations of inertial navigation}
  
@@ -129,15 +129,17 @@ These figures have covered the cases of offset distortion in magnetometer readin
 The following filters have been tested in this project:
  
 \begin{itemize}
+\item Integrated gyro measurements
 \item Complementary
 \item Mahony
 \item Madgwick
 \end{itemize}
 
+The first solution is having the gyroscope angular rate integrated over time in order to obtain angular position, acting as a high-pass filter.
 The complementary filter is a common, fast, efficient solution for inertial measurements. It acts by low-pass filtering accelerometer data, and high-pass filtering by direct integration of gyroscope data, then fusing  these estimates together \cite{euston2008complementary}. 
-It uses the fact that the measurements from accelerometer and magnetometer are noisy yet steady over time, while gyroscope measurements are accurate in short periods, but drift over time. It results that in frequency domain, the gyroscope has desirable properties at high frequencies, therefore it requires a high-pass filter; while accelerometer and magnetometer have useful properties at low frequencies, which can be exploited through a low-pass filter.  \cite{kok2017using}. By combining the advantages of each group, they complement for each other's deficiencies. 
+It uses the fact that the measurements from accelerometer and magnetometer are noisy yet steady over time, while gyroscope measurements are accurate in short periods, but drift over time. It results that in frequency domain, the gyroscope has desirable properties at high frequencies, therefore it requires a high-pass filter; while accelerometer and magnetometer have useful properties at low frequencies, which can be exploited through a low-pass filter.  \cite{kok2017using}. By combining the advantages of each group, they complement for each other's deficiencies. However, the Euler angles calculated from the complementary filter and integrating gyro data are prone to singularities. 
 
-The following two are complementary-based filters. 
+The following two are quaternion-based filters. 
 Mahony or Explicit Complementary Filter, is a non-linear complementary filter, designed specifically for low-cost inertial measurement units and capable of achieving the same results as an extended Kalman filter with GPS and inertial data. This filter has been validated only for inertial data from accelerometer-gyro. \cite{euston2008complementary}
 Madgwick filter has been proven to produce similar to \cite{cirillo2016comparison} or improved accuracy over Kalman-based algorithms \cite{madgwick2010efficient}, with the advantage of having low computation cost, suitable for Arduino class micro-controllers. Another advantage over Mahony filter is its suitability for IMU and MARG systems, therefore, including magnetometers.
 

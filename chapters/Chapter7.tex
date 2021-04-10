@@ -1,7 +1,7 @@
 %!TEX root = ../Thesis.tex
 \chapter{Discussion and Future Work}
 
-This chapter further discusses the results from the testing phase, along with plans for future work
+\textit{This chapter further discusses the results from the testing phase, along with plans for future work}
 
 \section{Discussion}
 
@@ -12,8 +12,8 @@ The multitude of IMUs tried and tested helped understand the process from the gr
 The initial recommendation from the organisation was to limit the scope of this project by simulating a perfect IMU sensor.
 This was to avoid dealing with the significant challenges of real-world hardware. However, the navigation has proven to be a highly rewarding phase in terms of understanding the process, real life challenges in inertial sensors and the interaction with hardware.  
  
-Before finding the Mahony/Madgwick filters, there were other filters tried, which were finally deemed insufficient on their own compared to these filters - since both Mahony and Madgwick handle vibration well. There is however a noise component to the navigation output of these filters, which is detrimental to the Derivative of the PID controller. 
-Multiple methods for removing noise were tried, such as Moving Average with different weight for older versus newer data, Weighted average, Median filter, Savitzky-Golay Filter, out of which Moving Average filters showed the most promising results, as they have an effect of smoothing the errors, whereas Savitzky-Golay proved to follow outliers more closely as opposed to removing them. 
+Before finding the Mahony/Madgwick filters, other filters were explored, which were finally deemed insufficient on their own compared to these filters - since both Mahony and Madgwick handle vibration well. There is however a noise component to the navigation output of these filters, which is detrimental to the Derivative of the PID controller. 
+Multiple methods for removing noise were tested, such as Moving Average with different weight for older versus newer data, Weighted average, Median filter, Savitzky-Golay Filter, out of which Moving Average filters showed the most promising results, as they have an effect of smoothing the errors, whereas Savitzky-Golay proved to follow outliers more closely as opposed to removing them. 
 Moving average is a Finite Impulse Response (FIR) filter, taking N data samples and averaging them over a given window of time. 
 Exponential moving average filter is an Infinite Impulse Response (IIR) filter. It has a parameter (weight) ranging from 0 to 1, a higher value giving more weight to older data. In figure  \ref{movingaverage}, this parameter was set to 0.9. 
 

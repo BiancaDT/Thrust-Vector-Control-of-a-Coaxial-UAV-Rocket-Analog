@@ -2,11 +2,11 @@
 \chapter{Experimental validation and results}
 \section{Experimental setup for sensor fusion methods}
 
-This chapter describes the test facility and experiments done in order to evaluate the performance of the complementary, Mahony and Madgwick sensor fusion algorithms.
+\textit{This chapter describes the test facility and experiments done in order to evaluate the performance of the complementary, Mahony and Madgwick sensor fusion algorithms.}
 
 \subsection{Experimental setup - navigation tests}
 
-The tests were performed with a the IMU and Arduino placed on a UR3 robotic arm and aided by the Optitrack motion capture system of the DTU robotic lab as "ground truth" due to measurements accuracy. 
+The tests were performed with the IMU and Arduino placed on a UR3 robotic arm and aided by the Optitrack motion capture system of the DTU robotic lab as "ground truth", due to the accuracy of its measurements. 
 Before each test, the IMU is calibrated, through the methods described in the navigation chapter until full calibration is achieved. However, it has been observed that under motion, the calibration of this device is affected, particularly on the accelerometer and magnetometer side, which negatively affected the filters relying on both these devices for updates. 
 
 The data from Optitrack was collected through its network broadcast address. The broadcast data is transmitted and received through UDP protocol, therefore there is loss of packets and the data appears noisy. 
@@ -58,7 +58,7 @@ The objective of this experiment is to compare the performance of the filters ag
 
 Optitrack, Complementary filter and integrated gyro provide a relative measurement of yaw from their initial point, considered 0.
 Mahony and Madgwick filter calculate absolute heading as measured by the magnetometer, based on the Earth's magnetic North. 
-Due to the objective of this test is to measure the drift while static, all filters have been aligned to the absolute yaw measurement provided by the former two filters - then measuring deviations while the sensor is maintained static. 
+Due to the objective of this test which is to measure the drift while static, all filters have been aligned to the absolute yaw measurement provided by the former two filters - then measuring deviations while the sensor is maintained static. 
 
 \textbf{Experiment 1: Static test for comparing drift over time}
 
@@ -97,6 +97,7 @@ The accelerometer is known to be stable over time, but has higher noise occurren
 
 Table \ref{table:1} shows the performance of the filters for each separate axis. The mean value for roll and pitch is desired to be closer to 0, whereas for yaw it is desired to be closer to 200, the absolute yaw value as indicated by the sensor compass, while standard deviation is desired to be minimized. Based on these parameters, gyro integrated had a mean absolute offset of 0.1-0.2 degrees for roll and pitch and the largest yaw deviation of all filters. The other filters had similar yaw performance in static conditions. Complementary filter presented the largest roll and pitch offsets, as well as standard deviation overall. This is possibly due to the large weight given to gyro measurements in the filter, which tends to drift over time while static, possibly amplified by the incidence of accelerometer noise. It is expected that under movement, the adapting properties of the gyro will provide the filter with better performance. Mahony performed best both in terms of offset and noise, consistently across all axes. Madgwick measured slightly less well, unexpectedly, with a large deviation on pitch mean, but low noise; low roll offset but slightly higher noise than Mahony and gyro integrated and finally, good performance on yaw data. Madgwick is likely to have been more impacted  than Mahony by calibration errors. 
 
+\vspace{30mm}
 
 \textbf{Experiment 2: Motion test for comparing performance under movement}
 
@@ -131,7 +132,7 @@ Figure \ref{fig:Comparison of Filters on Pitch Axis in Motion} compares the perf
 
 The integrated gyro performs better in static than movement tests, in terms of both offset (mean) and noise measurement (std dev). While its yaw std.dev. is low, that measurement cannot be considered conclusive since it did not report well on the true motion. This difference between static and motion could potentially be accounted for by the additional drift from reference it experiences under movement, not having information about absolute measurements to correct this drift, thus leading to deviations wider in amplitude. The complementary filter encountered similar challenges, being 95 percent based on gyro measurements - it performed better in the static test. While its pitch and roll measurements were  fairly similar to Mahony and Madgwick filters, its yaw estimation is not usable, having widely deviated and provided particularly noisy output. Since it is a requirement in this project to have accurate yaw data, the integrated gyro and complementary filter prove to not be suitable. 
 
-Mahony performed similarly to the static test, with reliable and consistent, measurements for both pitch and roll axis, with reliable signal trend capture. Yaw output was satisfactory, considering that the magnetometer lost and regained calibration during the motion, which impacted this measurement for both Mahony and Madgwick filters. It is expected that with more consistent sensor calibration, yaw output will improve. Madgwick filter also performed well - with best results on pitch axis  and best trend capture on yaw axis of all filters. Roll measurement was its most affected, but it still provided good data compared to integrated gyro and complementary - and overall a comparable performance to Mahony. 
+Mahony performed similarly to the static test, with reliable and consistent, measurements for both pitch and roll axis, along with reliable signal trend capture. Yaw output was satisfactory, considering that the magnetometer lost and regained calibration during the motion, which impacted this measurement for both Mahony and Madgwick filters. It is expected that with more consistent sensor calibration, yaw output will improve. Madgwick filter also performed well - with best results on pitch axis  and best trend capture on yaw axis of all filters. Roll measurement was its most affected, but it still provided good data compared to integrated gyro and complementary - and overall a comparable performance to Mahony. 
 
 
 \textbf{Combined measurements}
@@ -175,7 +176,14 @@ The calibration of the sensor is potentially affected by vibration of the roboti
 
 The objective is to test the controller on pitch axis, as designed, without interference from additional forces on the system. The initial setup had the drone oscillating wildly in its enclosure, therefore some changes were performed. 
 The drone was reinforced with steel wire and adjusted into a rigid body, to remove side wobbling and products of inertia. 
-In the previous setup, the propeller thrust was hitting the floor and influencing drone oscillations - therefore it was moved at a higher above floor level, hanged about its  center of mass and  restricted its motion to only allowing the pitch axis degree of freedom. 
+In the previous setup, the propeller thrust was hitting the floor and influencing drone oscillations - therefore it was moved at a higher above floor level, hanged about its  center of mass and  restricted its motion to only allowing the pitch axis degree of freedom, as seen in fig. \ref{fig:UAV test setup}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{graphics/Control/DronePic.PNG}
+    \caption{UAV test setup}
+     \label{fig:UAV test setup}
+\end{figure} 
 
 It is outside of the scope of the project to control the thrust of the propellers - in the same manner that the rocket thrust is not handled by the guidance system, but given as a constant. 
 Therefore, the testing is restricted to the drone's angular position, as influenced by the rudder deflecting the propeller thrust. Testing is performed with the drone tethered for safety, with its body frame placed at some inclination from its equilibrium point and measuring for the rise time, overshoot and settling time of the controller. 
@@ -217,5 +225,4 @@ One potential reason why the response was slower than the simulation output is t
 The Derivative gain brings important performance improvements to the settling time of the system and minimizing overshoot. The value found in simulation is likely not realistic due to the amplification of response to navigation data noise. Smoother navigation signal would improve the output. Another possibility is, there might have been parameter deviations in the model, and while actuator range limits have been included in the model, actuator delays have not been accounted for, which could have impacted the performance. Further tests are needed to find a suitable kD parameter and improve the response time. 
 
 
-
-This chapter demonstrated the use of the model-based control. Following, there will be the discussion of the results and the tests to be carried in future work. 
+\textit{This chapter demonstrated the use of the model-based control. Following, there will be the discussion of the results and the tests to be carried in future work. }
