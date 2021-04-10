@@ -14,8 +14,6 @@ The filters data was collected through an USB cable connected to the Arduino Nan
 
 With a filter update rate of 1 kHz, the integrated gyro was found to drift while static with 1 deg/s. With an update rate of 1 mHz, the drift was reduced to 0.1 deg/s. This update rate was selected in order to provide comparable measurements with the fusion filters update rates: complementary, Mahony and Madgwick. The former two filters are iterative, having to iterate over several samples in order to converge. 
 
-\textbf{How each RPY is calculated}
-
 The filters were aligned to match same IMU axes and polarities and ranges. The Madgwick filter was tuned to beta parameter of 0.5, which gives equal weight to gyro and to the accelerometer-magnetometer pair. The complementary filter uses 0.95 weight from gyro and 0.05 from accelerometer for the roll and pitch axes and a compensated magnetometer calculation for the yaw. 
 
 
@@ -216,7 +214,7 @@ A controller with the same kP and a smaller kD=-0.1 has been however found to ha
 
 Different tests of the controller behavior have been performed - it was found that a kP higher than the kP=2 based on the simulation was not beneficial and a lower value was too slow of a response. 
 One potential reason why the response was slower than the simulation output is that the drone was not run at the thrust force value of 30N specified in the model. The propellers force is a function of input voltage and the battery supply was discharging fast during the tests, as the workshop had very low temperature. The drone was run on its lowest thrust value since the higher energy consumption would have lead to depleting the battery faster, thus possibly impeding further tests. 
-The Derivative gain brings important performance improvements to the settling time of the system and minimizing overshoot. The value found in simulation is likely not realistic due to the amplification of response to navigation data noise. Smoother navigation signal would improve the output. Another possibility is, there might have been parameter deviations in the model. Further tests are needed to find a suitable kD parameter and improve the response time. 
+The Derivative gain brings important performance improvements to the settling time of the system and minimizing overshoot. The value found in simulation is likely not realistic due to the amplification of response to navigation data noise. Smoother navigation signal would improve the output. Another possibility is, there might have been parameter deviations in the model, and while actuator range limits have been included in the model, actuator delays have not been accounted for, which could have impacted the performance. Further tests are needed to find a suitable kD parameter and improve the response time. 
 
 
 

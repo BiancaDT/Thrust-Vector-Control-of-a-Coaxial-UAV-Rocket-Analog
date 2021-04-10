@@ -846,17 +846,15 @@ The role of the controller is to minimize the error. In designing the controller
 \textbf{Controller design}
 
 In the modelling section chapter, the UAV was modeled using first principles (nonlinear physical laws).
-
 The system has voltage to servo as input, with drone angular position as output. The thrust force of the propellers is considered part of the model as opposed to an input due to the force being a constant. 
 Therefore, the system is considered a SISO (single input single output), modelled as state space model.
 
 
 \textbf{Linearization }- the model obtained from first principles was highly non-linear.
-
 While this non-linearity gives higher precision, it is resource intensive and especially so for Arduino-class micro controllers. 
 Linearization  helps speed up this process and would facilitate control system design. 
 
-This is achieved by the first order partial derivatives of the model at a steady state operating point. (Jacobian matrix)
+This is achieved by the first order partial derivatives of the model at a steady state operating point (Jacobian matrix).
 
 A is the Jacobian of the function evaluated at the steady state (equilibrium position). 
 
@@ -875,43 +873,35 @@ A is the Jacobian of the function evaluated at the steady state (equilibrium pos
 
 \textbf{Linearized stability analysis}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.9]{graphics/PoleZeromap.png}
+    \caption{Pole-Zero Map}
+     \label{fig:Pole-Zero Map}
+\end{figure} 
+
+
 The stability is expressed with respect to the system response as a function of time. 
-
 In order to determine the stability of the system, its eigenvalues (poles) are analyzed, pictured in (\ref{fig:Pole-Zero Map}), Where the poles of the system are marked with an \textbf{x} and zeros are marked with \textbf{o}. It can be seen in (\ref{fig:Pole-Zero Map}) that the poles of the system have zero real part - indicating that the system is marginally stable. 
-
 On the imaginary scale, two poles having zero imaginary parts - indicating no oscillations - and two poles placed on the axis, indicating oscillations in the system. Therefore, the purely imaginary eigenvalues describe the system as a marginally stable, undamped oscillator. 
-
 The two zeroes of the system are placed on the real axis, at +/-0.00808. The zero in the left plane is a good solution for controller design, having stability and no oscillations. 
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[scale=0.8]{graphics/PoleZeromap.png}
-  \caption{Pole-Zero Map}
-  \label{fig:Pole-Zero Map}
-\end{figure}
 
 
 The poles and zeroes are then analyzed in combination with varying gains for the feedback system, in order to determine viable solutions for the controller. The plot (\ref{fig:Root Locus Map}) shows the grid on the left hand side of the real-imaginary plane, for the values where the system is stable. 
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[scale=0.45]{graphics/rlocus.png}
-  \caption{Root Locus Map}
-  \label{fig:Root Locus Map}
-\end{figure}
-
-
 \textbf{Controllability matrix} of the state-space LTI system
 
 Controllability is a property of a system of a particular actuator configuration to control all the states of the system; in a similar manner, observability returns the property of the particular sensor configuration to estimate all the states of the system. \cite{preumont2018vibration}
-
 The system returns full state observability. 
-
 Analysis of controllability matrix reveals that it has rank equal to the dimension of the state space, therefore the system is full rank controllable.
 
 \textbf{Control}
 
-The chosen control algorithm was a PID (Proportional Integral Derivative) controller, since literature revealed that typical control laws for rockets are variations of the PID controller. \cite{de2012spacecraft} \cite{taylor2017introduction}
+The chosen control algorithm was a PID (Proportional Integral Derivative) controller, since literature revealed that typical control laws for rockets are variations of the PID controller \cite{de2012spacecraft} \cite{taylor2017introduction}, described in equation  \ref{PIDequation}.
+
+\begin{equation}\label{PIDequation}
+u(t)=K_{p}e(t) + K_{i}\int{e}(t)dt+K_{d}\frac{d}{dt}e 
+\end{equation}
 
 An advantage of the PID is that it can fulfill the requirement of extending to additional axes because it can be decoupled - the current 1 axis control can be extended to 2 or 3 axes, which was one of the requirements. Another advantage of the PID is that a different set of gains can be calculated for different moments of inertia - in the case of the rocket, it has a different moment of inertia due to exhausting the propellants, from the moment of launch to the moment of emptying the tanks. 
 
@@ -929,7 +919,6 @@ The performance of the controller will be assessed against the requirements ment
 \textbf{Simulation}
 
 A model was prepared in Simulink for testing the control algorithm for the UAV. 
-
 The control input is the actuator torque.
 
 \begin{figure}[H]
