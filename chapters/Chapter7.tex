@@ -12,10 +12,12 @@ The multitude of IMUs tried and tested helped understand the process from the gr
 The initial recommendation from the organisation was to limit the scope of this project by simulating a perfect IMU sensor.
 This was to avoid dealing with the significant challenges of real-world hardware. However, the navigation has proven to be a highly rewarding phase in terms of understanding the process, real life challenges in inertial sensors and the interaction with hardware.  
  
-Before finding the Mahony/Madgwick filters, there were other filters tried, which were finally deemed unnecessary after these filters, as they handle vibration. 
-Methods for removing noise were tried, such as Moving average with different weight for older versus newer data, Weighted average, Median filter, Savitzky-Golay Filter, out of which moving/weighted average showed the most promising results, as they have an effect of smoothing the errors, whereas Savitzky-Golay proved to follow outliers more closely as opposed to removing them. 
+Before finding the Mahony/Madgwick filters, there were other filters tried, which were finally deemed insufficient on their own compared to these filters - since both Mahony and Madgwick handle vibration well. There is however a noise component to the navigation output of these filters, which is detrimental to the Derivative of the PID controller. 
+
+Methods for removing noise were tried, such as Moving Average with different weight for older versus newer data, Weighted average, Median filter, Savitzky-Golay Filter, out of which Movingaverage showed the most promising results, as they have an effect of smoothing the errors, whereas Savitzky-Golay proved to follow outliers more closely as opposed to removing them. 
  Moving average is a Finite Impulse Response (FIR) filter, taking N data samples and averaging them over a given window of time. 
 Exponential moving average filter is an Infinite Impulse Response (IIR) filter. It has a parameter (weight) ranging from 0 to 1, a higher value giving more weight to older data. In figure  \ref{movingaverage}, this parameter was set to 0.9. 
+
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.7]{graphics/accZ.png}
@@ -47,15 +49,12 @@ An attempt was made to compare simple moving average and exponential weighted mo
 Complementary isn't suitable for singularities because of way it uses Euler angles. On top of it Mahony performing best anyway. 
 
 
-
-
-
-
 \textbf{Control considerents: robustness}
 
 Calibration of the errors was important because the derivative component of the PID amplifies high-frequency signals (noise) in the sensor measurements.
+This was evident during the tests performed on IMU without the filters discussed in this section, but with its stock calibration instead. The Derivative term was nearly unusable. 
+In case of using the Integral part of PID, anti-windup measures are also necessary, however, due to its possible complications, the intention was to not implement this component. 
 
-In case of using the Integral part of PID, anti-windup measures are also necessary. 
 
 
 \section{Future work}
@@ -66,6 +65,5 @@ Subsequent iterations of the hardware prototype would expand its capabilities to
 The navigation will be tested on a small scale rocket built by former DanSTAR students of DTU, in collaboration with Copenhagen Suborbitals, planned to be launched in Portugal in the fall of 2021. Prior to this, there will be conducted additional vibration tests of the filters, along with performance under acceleration, jerky movements and heavy vibration. 
 
 The controller will have added features with focus on robustness and adding variable mass and moment of inertia as opposed to the fixed bodies moment of inertia in the current iteration. Tests should be done on variable mass drone to closer simulate the rocket. 
-
 Another possibility for control architecture is gain scheduling or cascaded control. 
-
+An LQR controller was also designed and simulated, however, its output was maintaining the system marginally stable and oscillating, as opposed to dampening its oscillations. Further inquiring into its behavior is needed before it will be applied on the UAV and tested against the PID.  
