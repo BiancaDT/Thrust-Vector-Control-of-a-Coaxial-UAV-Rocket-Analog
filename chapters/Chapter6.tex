@@ -175,17 +175,49 @@ The calibration of the sensor is potentially affected by vibration of the roboti
 
 \subsection{Experimental setup - control test}
 
-The objective was to test the controller on pitch axis, as designed, without interference from additional forces on the system. The initial setup had the drone oscillating wildly in its enclosure, therefore some changes were performed. 
+The objective is to test the controller on pitch axis, as designed, without interference from additional forces on the system. The initial setup had the drone oscillating wildly in its enclosure, therefore some changes were performed. 
 The drone was reinforced with steel wire and adjusted into a rigid body, to remove side wobbling and products of inertia. 
 In the previous setup, the propeller thrust was hitting the floor and influencing drone oscillations - therefore it was moved at a higher above floor level, hanged about its  center of mass and  restricted its motion to only allowing the pitch axis degree of freedom. 
 
 It is outside of the scope of the project to control the thrust of the propellers - in the same manner that the rocket thrust is not handled by the guidance system, but given as a constant. 
 Therefore, the testing is restricted to the drone's angular position, as influenced by the rudder deflecting the propeller thrust. Testing is performed with the drone tethered for safety, with its body frame placed at some inclination from its equilibrium point and measuring for the rise time, overshoot and settling time of the controller. 
+The drone has been inclined to 0.2 to 0.8 absolute rotations in order to observe its response with different sets of gains.
+Starting with a Proportional Gain of 2, as found by the simulation, the response has been as expected, with proportional response and overshoot.
+Fig. \ref{fig:Controller with kP=2} shows the drone controller with kP=2, showing a fast response when inclined to 30 degrees, overshooting by 30 percent and with a settling time of 5 seconds. This response shows that a higher kP would not benefit the system, but only introduce more overshoot and longer settling time. 
 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{graphics/Control/p2_Moment(2).jpg}
+    \caption{Controller with kP=2}
+     \label{fig:Controller with kP=2}
+\end{figure} 
+
+ Fig. \ref{fig:Controller with kP=2 kD=6} shows the controller with the set of gains kP=2, kD=6 found in the simulation. It was found that its response had too much jitter in servo movement and was not performing well. The jitter is most probably the result of the Derivative gain, which was an expected effect. However, the behavior observed was that the rudder would react with fast movements back and forth which were not adding to the performance. Instead, once the drone was brought to an inclination, rudder would move fast but then quickly resume its equilibrium position of 90 degrees, thus not influencing the drone position further but instead keeping it at the inclination it was manually brought to. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{graphics/Control/p2d6_Moment(3).jpg}
+    \caption{Controller with kP=2 kD=6}
+     \label{fig:Controller with kP=2 kD=6}
+\end{figure} 
+
+A controller with the same kP and a smaller kD=-0.1 has been however found to have no overshoot and a settling time of 2 seconds, so the Derivative gain has a positive effect on the performance. In fig. \ref{fig:Controller with kP=2 kD=-0.1}, the drone was first, manually inclined to 20 degrees at time t=2, and it reached equilibrium position at approx. t=3.8. The drone was inclined again, to the initial conditions specified in the Simulink model for the controller at approx. t=5.8, and it corrected itself to equilibrium 1.5 seconds later.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.25]{graphics/Control/p2dminus01_Moment.jpg}
+    \caption{Controller with kP=2 kD=-0.1}
+     \label{fig:Controller with kP=2 kD=-0.1}
+\end{figure} 
 
 \subsection{Analysis of control performance}
 
+Different tests of the controller behavior have been performed - it was found that a kP higher than the kP=2 based on the simulation was not beneficial and a lower value was too slow of a response. 
+One potential reason why the response was slower than the simulation output is that the drone was not run at the thrust force value of 30N specified in the model. The propellers force is a function of input voltage and the battery supply was discharging fast during the tests, as the workshop had very low temperature. The drone was run on its lowest thrust value since the higher energy consumption would have lead to depleting the battery faster, thus possibly impeding further tests. 
+The Derivative gain brings important performance improvements to the settling time of the system and minimizing overshoot. The value found in simulation is likely not realistic due to the amplification of response to navigation data noise. Smoother navigation signal would improve the output. Another possibility is, there might have been parameter deviations in the model. Further tests are needed to find a suitable kD parameter and improve the response time. 
 
 
 
-This chapter demonstrated the use of the model-based control, with the observed outcome; following this, it will be the discussion of the results and the tests to be carried in future work. 
+This chapter demonstrated the use of the model-based control. Following, there will be the discussion of the results and the tests to be carried in future work. 
